@@ -8,7 +8,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface UsuarioRepository  extends JpaRepository<Usuario , Long>        {
+public interface UsuarioRepository  extends JpaRepository<Usuario , Long> { 
+public Usuario findByUsuarioContainingIgnoreCase(String usuario);
 	public Optional<Usuario> findByUsuario(String usuario);
 	
 	public List <Usuario> findAllByNomeContainingIgnoreCase(String nome);
@@ -16,3 +17,4 @@ public interface UsuarioRepository  extends JpaRepository<Usuario , Long>       
 	
 	
 }
+//package org.generation.blog.repository;
