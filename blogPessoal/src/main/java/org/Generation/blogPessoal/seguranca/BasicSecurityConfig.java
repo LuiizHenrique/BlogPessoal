@@ -22,10 +22,8 @@ public class BasicSecurityConfig extends WebSecurityConfigurerAdapter {
 		auth.userDetailsService(userDetailsService);
 		
 		
-		auth.inMemoryAuthentication()
-		.withUser("root")
-		.password(passwordEncoder().encode("root"))
-		.authorities("ROLE_USER");
+		auth.inMemoryAuthentication().withUser("root").password(passwordEncoder().encode("root"))
+		.authorities("ROLE_ADMIN");
 	}
 
 	@Bean
@@ -37,6 +35,7 @@ public class BasicSecurityConfig extends WebSecurityConfigurerAdapter {
 		http.authorizeRequests()
 		.antMatchers("/usuarios/logar").permitAll()
 		.antMatchers("/usuarios/cadastrar").permitAll()
+		.antMatchers("/usuarios/atualizar").permitAll()
 		.anyRequest().authenticated()
 		.and().httpBasic()
 		.and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
