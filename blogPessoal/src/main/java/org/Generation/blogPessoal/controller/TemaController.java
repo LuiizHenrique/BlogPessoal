@@ -1,6 +1,9 @@
 package org.Generation.blogPessoal.controller;
 
 import java.util.List;
+import java.util.Optional;
+
+import javax.validation.Valid;
 
 import org.Generation.blogPessoal.model.Tema;
 import org.Generation.blogPessoal.repositary.TemaRepository;
@@ -15,7 +18,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -75,16 +80,25 @@ public class TemaController {
 	@ApiResponses(value = { @ApiResponse(responseCode = "201", description = "Retorna Tema Atualizado"),
 			@ApiResponse(responseCode = "400", description = "Erro na requisição"),
 			@ApiResponse(responseCode = "500", description = "Erro interno no servidor") })
-	@PutMapping
-	public ResponseEntity<Tema> put(@RequestBody Tema tema) {
-		return ResponseEntity.ok(repository.save(tema));
-	}
 
+	@PutMapping
+	public ResponseEntity<Tema> put(@Valid @RequestBody Tema tema){
+		return repository.findById(tema.getId())
+				.map(resp -> ResponseEntity.status(HttpStatus.CREATED).body(repository.save(tema)))
+				.orElse(ResponseEntity.status(HttpStatus.BAD_REQUEST).build());
+	}
+	
 	@Operation(summary = "Deleta Tema existente")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Tema deletado"),
 			@ApiResponse(responseCode = "400", description = "Id de tema inválido"), })
+	
+	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@DeleteMapping("/{id}")
 	public void delete(@PathVariable long id) {
+		Optional<Tema> tema = repository.findById(id);
+
+		if(tema.isEmpty())
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
 
 		repository.deleteById(id);
 	}

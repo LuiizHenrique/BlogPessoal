@@ -54,7 +54,7 @@ public class UsuarioControllerTests {
 	@DisplayName("Não deve permitir duplicação do Usuário")
 	public void naoDeveDuplicarUsuario() {
 
-		usuarioService.CadastrarUsuario(new Usuario(0L, "Maria da Silva", "https://i.imgur.com/NtyGneo.jpg",
+		usuarioService.cadastrarUsuario(new Usuario(0L, "Maria da Silva", "https://i.imgur.com/NtyGneo.jpg",
 				"maria_silva@email.com.br", "13465278"));
 
 		HttpEntity<Usuario> requisicao = new HttpEntity<Usuario>(new Usuario(0L, "Maria da Silva",
@@ -71,7 +71,7 @@ public class UsuarioControllerTests {
 	@DisplayName("Alterar um Usuário")
 	public void deveAtualizarUmUsuario() {
 
-		Optional<Usuario> usuarioCreate = usuarioService.CadastrarUsuario(new Usuario(0L, "Juliana Andrews",
+		Optional<Usuario> usuarioCreate = usuarioService.cadastrarUsuario(new Usuario(0L, "Juliana Andrews",
 				"https://i.imgur.com/yDRVeK7.jpg", "juliana_andrews@email.com.br", "juliana123"));
 
 		Usuario usuarioUpdate = new Usuario(usuarioCreate.get().getId(), "Juliana Andrews Ramos",
@@ -93,10 +93,10 @@ public class UsuarioControllerTests {
 	@DisplayName("Listar todos os Usuários")
 	public void deveMostrarTodosUsuarios() {
 
-		usuarioService.CadastrarUsuario(new Usuario(0L, "Sabrina Sanches", "https://i.imgur.com/EcJG8kB.jpg",
+		usuarioService.cadastrarUsuario(new Usuario(0L, "Sabrina Sanches", "https://i.imgur.com/EcJG8kB.jpg",
 				"sabrina_sanches@email.com.br", "sabrina123"));
 
-		usuarioService.CadastrarUsuario(new Usuario(0L, "Ricardo Marques", "https://i.imgur.com/Sk5SjWE.jpg",
+		usuarioService.cadastrarUsuario(new Usuario(0L, "Ricardo Marques", "https://i.imgur.com/Sk5SjWE.jpg",
 				"ricardo_marques@email.com.br", "ricardo123"));
 
 		ResponseEntity<String> resposta = testRestTemplate
